@@ -7,10 +7,9 @@ TIME_INTERVAL = 2
 RUNNING = 1
 DAILY = 86400
 
-data = {}
-
 
 def collect_data(duration):
+    collected_data = {}
     prev_program = ''
     timeout = duration
     if duration <= 0:
@@ -19,17 +18,16 @@ def collect_data(duration):
         time.sleep(TIME_INTERVAL)
         raw_window_info = GetWindowText(GetForegroundWindow())
         curr_program = (re.split(' - ', raw_window_info))[-1]
-        if prev_program in data:
-            data[prev_program] += TIME_INTERVAL
+        if prev_program in collected_data:
+            collected_data[prev_program] += TIME_INTERVAL
         elif prev_program != '':
-            data[prev_program] = TIME_INTERVAL
+            collected_data[prev_program] = TIME_INTERVAL
         prev_program = curr_program
         ++i
-        print(data)
+    return collected_data
 
 
 # test with 6 seconds of running
-collect_data(6)
 
-
-
+data = collect_data(6)
+print(data)
